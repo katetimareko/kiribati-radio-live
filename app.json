@@ -19,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "radio.softdev.sok.com.kiribatiradiolive"
     },
     "android": {
       "adaptiveIcon": {
