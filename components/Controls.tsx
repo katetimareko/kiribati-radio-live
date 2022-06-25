@@ -2,7 +2,15 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useState, useEffect } from "react"
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av'
+import {
+    AdMobInterstitial,
+  } from 'expo-ads-admob';
+import * as Device from 'expo-device'
 
+const testID = 'ca-app-pub-3940256099942544/1033173712';
+const productionID = 'ca-app-pub-9329512651648015/7712248531';
+// Is a real device and running in production.
+const adUnitID = Device.isDevice && !__DEV__ ? productionID : testID;
 
 const url = 'http://streamer5.rightclickitservices.com:9790/stream'
 export default function Controls() {
@@ -10,7 +18,7 @@ export default function Controls() {
     const [sound, setSound] = useState<Audio.Sound>()
     const [isPlaying, setIsPlaying] = useState<boolean>()
 
-    function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
+    async function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
         if (!playbackStatus.isLoaded) {
             // Update your UI for the unloaded state
             if (playbackStatus.error) {
@@ -21,6 +29,7 @@ export default function Controls() {
             // Update your UI for the loaded state
 
             if (playbackStatus.isPlaying) {
+                
               // Update your UI for the playing state
               setIsPlaying(true)
             } else {
@@ -38,15 +47,39 @@ export default function Controls() {
     useEffect(() => {
         if (sound && sound._loaded)
             sound?.playAsync()
-        return sound
+        
+            AdMobInterstitial.setAdUnitID(adUnitID);
+            AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+                console.log("interstitialDidLoad")
+            )
+            AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+                console.log("interstitialDidFailToLoad")
+            )
+            AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+                console.log("interstitialDidOpen")
+            )
+            AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+                console.log("interstitialDidClose")
+            )
+        
+            return sound
           ? () => {
               console.log('Unloading Sound')
               setIsPlaying(false)
-              sound.unloadAsync() }
+              sound.unloadAsync() 
+              AdMobInterstitial.removeAllListeners();
+            }
+
           : undefined
       }, [sound])
 
     async function onPlay() {
+        
+        AdMobInterstitial.requestAdAsync().then(() => {
+            AdMobInterstitial.showAdAsync()
+        }).catch( _ => {
+        })
+
         if (!sound) {
             await Audio.setAudioModeAsync({
                 interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
@@ -69,7 +102,7 @@ export default function Controls() {
             })
         }
         sound.playAsync()
-
+       
     }
 
     async function onPause() {
@@ -83,6 +116,8 @@ export default function Controls() {
     async function onReload() {
         await sound?.unloadAsync()
     }
+
+
 
     return (
         <View style={styles.container}>
