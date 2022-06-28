@@ -1,4 +1,4 @@
-package radio.softdev.sok.com.kiribatiradiolive.newarchitecture;
+package com.kmar966.app.kiribatiradiolive.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import radio.softdev.sok.com.kiribatiradiolive.BuildConfig;
-import radio.softdev.sok.com.kiribatiradiolive.newarchitecture.components.MainComponentsRegistry;
-import radio.softdev.sok.com.kiribatiradiolive.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.kmar966.app.kiribatiradiolive.BuildConfig;
+import com.kmar966.app.kiribatiradiolive.newarchitecture.components.MainComponentsRegistry;
+import com.kmar966.app.kiribatiradiolive.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

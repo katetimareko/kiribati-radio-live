@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native"
+import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useState, useEffect } from "react"
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av'
@@ -8,7 +8,7 @@ import {
 import * as Device from 'expo-device'
 
 const testID = 'ca-app-pub-3940256099942544/1033173712';
-const productionID = 'ca-app-pub-9329512651648015/7712248531';
+const productionID = 'ca-app-pub-4159721019020027/7246275834';
 // Is a real device and running in production.
 const adUnitID = Device.isDevice && !__DEV__ ? productionID : testID;
 
@@ -17,6 +17,7 @@ export default function Controls() {
 
     const [sound, setSound] = useState<Audio.Sound>()
     const [isPlaying, setIsPlaying] = useState<boolean>()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     async function onPlaybackStatusUpdate(playbackStatus: AVPlaybackStatus) {
         if (!playbackStatus.isLoaded) {
@@ -27,11 +28,11 @@ export default function Controls() {
             }
           } else {
             // Update your UI for the loaded state
-
             if (playbackStatus.isPlaying) {
                 
               // Update your UI for the playing state
               setIsPlaying(true)
+                setIsLoading(false)
             } else {
               // Update your UI for the paused state
               setIsPlaying(false)
@@ -74,6 +75,10 @@ export default function Controls() {
       }, [sound])
 
     async function onPlay() {
+        var status = await sound?.getStatusAsync()
+
+            setIsLoading(true)
+
         
         AdMobInterstitial.requestAdAsync().then(() => {
             AdMobInterstitial.showAdAsync()
@@ -114,6 +119,7 @@ export default function Controls() {
     }
 
     async function onReload() {
+        setIsPlaying(false)
         await sound?.unloadAsync()
     }
 
@@ -132,6 +138,9 @@ export default function Controls() {
                     <Ionicons style={{ paddingRight: 15}} name="stop-circle-outline" size={62} color="white" />
                 </Pressable>
                 {
+                    isLoading ? 
+                        <ActivityIndicator size={82} color="white" />
+                    :
                     !isPlaying ?
                     <Pressable onPress={onPlay}>
                         <Ionicons name="play-circle-outline" size={82} color="white" />

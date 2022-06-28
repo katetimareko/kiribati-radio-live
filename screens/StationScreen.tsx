@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Device from 'expo-device'
 
 const testID = 'ca-app-pub-3940256099942544/6300978111';
-const productionID = 'ca-app-pub-9329512651648015/3782407896';
+const productionID = 'ca-app-pub-4159721019020027/4566203802';
 // Is a real device and running in production.
 const adUnitID = Device.isDevice && !__DEV__ ? productionID : testID;
 

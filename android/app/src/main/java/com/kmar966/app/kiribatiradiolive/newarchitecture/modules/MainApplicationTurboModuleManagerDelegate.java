@@ -1,4 +1,4 @@
-package radio.softdev.sok.com.kiribatiradiolive.newarchitecture.modules;
+package com.kmar966.app.kiribatiradiolive.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

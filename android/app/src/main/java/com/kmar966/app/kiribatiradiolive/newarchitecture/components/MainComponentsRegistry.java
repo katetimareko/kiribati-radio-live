@@ -1,4 +1,4 @@
-package radio.softdev.sok.com.kiribatiradiolive.newarchitecture.components;
+package com.kmar966.app.kiribatiradiolive.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;
