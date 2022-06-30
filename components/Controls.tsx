@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator } from "react-native"
+import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator, Platform } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useState, useEffect } from "react"
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av'
@@ -8,7 +8,12 @@ import {
 import * as Device from 'expo-device'
 
 const testID = 'ca-app-pub-3940256099942544/1033173712';
-const productionID = 'ca-app-pub-4159721019020027/7246275834';
+const productionID = Platform.select({
+    ios: "ca-app-pub-4159721019020027/1088997375",
+   android: "ca-app-pub-4159721019020027/7246275834",
+ });
+
+
 // Is a real device and running in production.
 const adUnitID = Device.isDevice && !__DEV__ ? productionID : testID;
 
@@ -49,7 +54,7 @@ export default function Controls() {
         if (sound && sound._loaded)
             sound?.playAsync()
         
-            AdMobInterstitial.setAdUnitID(adUnitID);
+            AdMobInterstitial.setAdUnitID(adUnitID!);
             AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
                 console.log("interstitialDidLoad")
             )
@@ -89,7 +94,7 @@ export default function Controls() {
             await Audio.setAudioModeAsync({
                 interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
                 interruptionModeIOS: InterruptionModeIOS.DoNotMix,
-                staysActiveInBackground: true,
+                staysActiveInBackground: Platform.OS === 'android' ? true : false,                                                                                        
             })
             const { sound } = await Audio.Sound.createAsync({
                 uri: url
@@ -139,7 +144,7 @@ export default function Controls() {
                 </Pressable>
                 {
                     isLoading ? 
-                        <ActivityIndicator size={82} color="white" />
+                        <ActivityIndicator size={Platform.OS === 'android' ? 82 : "large"} color="white" />
                     :
                     !isPlaying ?
                     <Pressable onPress={onPlay}>
