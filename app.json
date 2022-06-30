@@ -20,7 +20,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kmar966.app.kiribatiradiolive"
+      "bundleIdentifier": "com.kmar966.app.kiribatiradiolive",
+      "buildNumber": "3",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
