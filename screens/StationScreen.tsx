@@ -25,9 +25,9 @@ export default function StationScreen() {
                 </View>
                 <View style={styles.ad}>
                     <AdMobBanner
-                    bannerSize="smartBannerLandscape"
+                    bannerSize="fullBanner"
                     adUnitID={adUnitID} // Test ID, Replace with your-admob-unit-id
-                    servePersonalizedAds // true or false
+                    servePersonalizedAds={true} // true or false
                     onDidFailToReceiveAdWithError={() => {
                         console.log('error')
                     }} />
@@ -39,7 +39,7 @@ export default function StationScreen() {
 
 const styles = StyleSheet.create({
     ad: {
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
     },
     content: {
         flex: 1,
