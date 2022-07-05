@@ -82,10 +82,9 @@ export default function Controls() {
     async function onPlay() {
         var status = await sound?.getStatusAsync()
 
-            setIsLoading(true)
-
+        setIsLoading(true)
         
-        AdMobInterstitial.requestAdAsync().then(() => {
+        AdMobInterstitial.requestAdAsync({servePersonalizedAds: true}).then(() => {
             AdMobInterstitial.showAdAsync()
         }).catch( _ => {
         })
