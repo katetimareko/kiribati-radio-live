@@ -105,7 +105,7 @@ function useSetupTrack() {
 
 const styles = StyleSheet.create({
     ad: {
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-end'
     },
     content: {
         flex: 1,
