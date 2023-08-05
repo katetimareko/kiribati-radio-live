@@ -29,9 +29,7 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
       - name: 🏗️ Build app
-        run: eas build --platform android --profile production --no-interactive
-      - name: 🛳️ Deploy
-        run: eas submit --platform android --latest --non-interactive
+        run: eas build --platform android --profile production --non-interactive
   Publish:
     needs: [Build-For-Platform]
     name: EAS Submit
