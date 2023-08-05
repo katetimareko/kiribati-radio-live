@@ -3,15 +3,15 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons'
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
-import { ColorSchemeName, Pressable } from 'react-native'
+import { ColorSchemeName } from 'react-native'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import StationScreen from '../screens/StationScreen'
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types'
+import { RootStackParamList } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
+import { requestUserPermission } from '../src/services/NotificationService'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -30,6 +30,9 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
+  React.useEffect(() => {
+    requestUserPermission()
+  }, [])
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={StationScreen} options={{ 

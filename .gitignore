@@ -74,5 +74,9 @@ web-build/
 dist/
 
 credentials.json
+google-services.json
+GoogleService-Info.plist
+android
+ios
 
 # @end expo-cli
