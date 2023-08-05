@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "KiribatiRadioLive",
+    "name": "Kiribati Radio Live",
     "slug": "KiribatiRadioLive",
     "version": "1.0.1",
     "orientation": "portrait",
@@ -20,12 +20,23 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kmar966.app.kiribatiradiolive",
-      "buildNumber": "5",
+      "bundleIdentifier": "radio.softdev.sok.com.kiribatiradiolive",
+      "buildNumber": "3",
       "infoPlist": {
         "UIBackgroundModes": [
           "audio"
-        ]
+        ],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSExceptionDomains": {
+            "localhost": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            },
+            "http://streamer5.rightclickitservices.com": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        }
       }
     },
     "android": {
@@ -33,11 +44,33 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kmar966.app.kiribatiradiolive",
-      "versionCode": 3
+      "package": "radio.softdev.sok.com.kiribatiradiolive",
+      "versionCode": 22
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "53554a64-d57a-4000-9e1b-5cf9ef08e15c"
+      }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "usesCleartextTraffic": true
+          },
+          "ios": {}
+        }
+      ]
+    ]
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-9329512651648015~7490552764",
+    "ios_app_id": "ca-app-pub-9329512651648015~4198237025"
   }
 }

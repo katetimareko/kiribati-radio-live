@@ -5,13 +5,15 @@
   "build": {
     "base": {
       "android": {
-        "autoIncrement": "versionCode"
+        "autoIncrement": "versionCode",
+        "credentialsSource": "local"
       },
       "ios": {
         "autoIncrement": "buildNumber"
       }
     },
     "development": {
+      "developmentClient": true,
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleDebug"
