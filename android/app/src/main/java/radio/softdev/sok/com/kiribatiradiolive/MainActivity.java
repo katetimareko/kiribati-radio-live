@@ -1,4 +1,4 @@
-package com.kmar966.app.kiribatiradiolive;
+package radio.softdev.sok.com.kiribatiradiolive;
 
 import android.os.Build;
 import android.os.Bundle;

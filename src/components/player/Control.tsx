@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,10 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 export interface ButtonProps {
-  iconName: string;
-  size: number;
+  children: React.JSX.Element
   onPress: () => void;
   type?: keyof typeof styles;
   style?: ViewStyle | TextStyle;
@@ -19,21 +19,28 @@ export interface ButtonProps {
 }
 
 export const Control: React.FC<ButtonProps> = ({
-  iconName,
-  size,
+  children,
   onPress,
   type = 'primary',
   style,
-  color = 'white'
 }) => {
+  const animatableView = useRef<Animatable.View>()
+
+  const bounce = () => animatableView.current?.pulse!(300).then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
+
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={{
+    <TouchableWithoutFeedback onPress={async () => {
+      await bounce()
+      onPress()
+    }}>
+      <Animatable.View 
+      ref={animatableView}
+      style={{
         ...styles[type],
         ...style
       }}>
-      <Ionicons name={`${iconName}`} color={color} size={size} />
-      </View>
+        {children}
+      </Animatable.View>
     </TouchableWithoutFeedback>
   );
 };

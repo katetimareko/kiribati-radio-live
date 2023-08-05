@@ -5,9 +5,15 @@ import TrackPlayer, { State, Event, useTrackPlayerEvents } from 'react-native-tr
 import { Control } from './Control';
 import { PlaybackError } from './PlaybackError';
 import { PlayPauseButton } from './PlayPauseButton';
+import { Ionicons } from '@expo/vector-icons';
+import { SetupService } from '../../services/SetupService';
+import { QueueInitialTracksService } from '../../services/QueueInitialTracksService';
 
-const performSkipToNext = () => TrackPlayer.skipToNext();
-const performSkipToPrevious = () => TrackPlayer.skipToPrevious();
+const reload = async () => {
+    await TrackPlayer.reset()
+    await SetupService()
+    await QueueInitialTracksService()
+}
 
 const events = [
     Event.PlaybackState,
@@ -27,9 +33,13 @@ export const PlayerControls: React.FC = () => {
     return (
         <View style={styles.container}>
             <View style={styles.row}>
-                <Control iconName='stop-circle-outline' size={42} onPress={performSkipToPrevious} type="secondary" />
+                <Control onPress={reload} type="secondary">
+                <Ionicons name='stop-circle-outline' size={42} color='white' />
+                </Control>
                 <PlayPauseButton />
-                <Control iconName='reload-circle-outline' size={42} onPress={performSkipToNext} type="secondary" />
+                <Control onPress={reload} type="secondary">
+                    <Ionicons name='reload-circle-outline' size={42} color='white' />
+                </Control>
             </View>
             <PlaybackError
                 error={ playerError ? playerError : undefined}
