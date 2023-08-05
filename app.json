@@ -63,8 +63,7 @@
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
             "usesCleartextTraffic": true
-          },
-          "ios": {}
+          }
         }
       ]
     ]
