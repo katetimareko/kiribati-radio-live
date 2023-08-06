@@ -6,6 +6,7 @@ import messaging from '@react-native-firebase/messaging';
 import mobileAds from 'react-native-google-mobile-ads';
 
 TrackPlayer.registerPlaybackService(() => PlaybackService)
+
 // Register background handler
 messaging().setBackgroundMessageHandler(async remoteMessage => {
     console.log('Message handled in the background!', remoteMessage);
