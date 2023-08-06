@@ -14,7 +14,9 @@ export const PlayPauseButton: React.FC = () => {
   })
 
   const bufferingDuringPlay = playState === State.Buffering
+  const connection = playState === State.Connecting
   const playing = playState === State.Playing
+  const playerReady = playState === State.Ready
 
   useEffect(() => {
     load()
@@ -27,16 +29,19 @@ export const PlayPauseButton: React.FC = () => {
     }
   }, [isClosed]);
 
-  return bufferingDuringPlay ? (
+  return bufferingDuringPlay || connection ? (
     <View style={styles.statusContainer}>
-      <ActivityIndicator />
+      <ActivityIndicator size='large' color='white' />
     </View>
   ) : (
     !playing ?
       <Control type='primary' onPress={() => {
-        if (isLoaded) {
-          TrackPlayer.pause()
+        if (isLoaded && playerReady) {
           show()
+        }
+
+        if (playing) {
+          TrackPlayer.pause()
         }
       }} style={styles.playPause}>
         <Ionicons name='play-circle-outline' size={82} color='white' />
