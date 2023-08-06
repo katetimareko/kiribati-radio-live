@@ -4,7 +4,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { useCallback, useEffect, useState } from 'react';
-import mobileAds from 'react-native-google-mobile-ads';
 import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { SetupService } from './src/services/SetupService';
