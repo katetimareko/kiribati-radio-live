@@ -4,22 +4,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { useCallback, useEffect, useState } from 'react';
-import mobileAds, { AdEventType, AppOpenAd, TestIds } from 'react-native-google-mobile-ads';
+import mobileAds from 'react-native-google-mobile-ads';
 import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { SetupService } from './src/services/SetupService';
 import { QueueInitialTracksService } from './src/services/QueueInitialTracksService';
+import { appOpenAd } from './src/helper/AppOpenAdHelper';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false)
-  const adUnitId = __DEV__ ? TestIds.APP_OPEN : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
-
-  const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
-    requestNonPersonalizedAdsOnly: true
-  });
 
   useEffect(() => {
     async function prepare() {
@@ -27,7 +23,6 @@ export default function App() {
         appOpenAd.load()
         await SetupService();
         await QueueInitialTracksService();
-        await mobileAds().initialize();
         await new Promise(resolve => setTimeout(resolve, 2000))
       } catch (e) {
         console.warn(e)

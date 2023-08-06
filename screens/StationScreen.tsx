@@ -1,27 +1,28 @@
 import GradientBackground from "../components/GradientBackground"
-import { ActivityIndicator, BackHandler, Linking, Platform, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
+import { ActivityIndicator, AppState, BackHandler, Linking, Platform, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { AdEventType, BannerAd, BannerAdSize, TestIds, useAppOpenAd, useInterstitialAd, InterstitialAd } from "react-native-google-mobile-ads";
 import { PlayerControls } from "../src/components/player/PlayerControls";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import TrackPlayer, { Track } from "react-native-track-player";
 import { TrackInfo } from "../src/components/player/TrackInfo";
 import { useNavigation } from "@react-navigation/native";
 import { HeaderButtons, HiddenItem, OverflowMenu, overflowMenuPressHandlerPopupMenu } from "react-navigation-header-buttons";
 import { MaterialHeaderButton } from "../src/components/HeaderItem";
 import { Ionicons } from "@expo/vector-icons";
+import { appOpenAd } from "../src/helper/AppOpenAdHelper";
 
 const Header = () => (
     <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
         <OverflowMenu
-        testID='moreOptionBtn'
-        onPress={ overflowMenuPressHandlerPopupMenu}
-        style={{ marginHorizontal: 10 }}
-        OverflowIcon={({ color }) => <Ionicons name="ellipsis-vertical" size={23} color='white' />}
-      >
-        <HiddenItem testID='exitBtn' title="Close App" onPress={() => {
-          BackHandler.exitApp()
-        }} />
-      </OverflowMenu>
+            testID='moreOptionBtn'
+            onPress={overflowMenuPressHandlerPopupMenu}
+            style={{ marginHorizontal: 10 }}
+            OverflowIcon={({ color }) => <Ionicons name="ellipsis-vertical" size={23} color='white' />}
+        >
+            <HiddenItem testID='exitBtn' title="Close App" onPress={() => {
+                BackHandler.exitApp()
+            }} />
+        </OverflowMenu>
     </HeaderButtons>
 )
 
@@ -30,6 +31,7 @@ export default function StationScreen() {
     const BannerId = Platform.OS === 'android' ? process.env.EXPO_PUBLIC_ANDROID_BANNER_ID : process.env.EXPO_PUBLIC_IOS_BANNER_ID
     const track = useSetupTrack()
     const navigation = useNavigation()
+    const appState = useRef(AppState.currentState)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -40,6 +42,11 @@ export default function StationScreen() {
     }, [navigation])
 
     useEffect(() => {
+
+        if (!appOpenAd.loaded) {
+            appOpenAd.load()
+        }
+
         function deepLinkHandler(data: { url: string }) {
             console.log('deepLinkHandler', data.url);
         }
@@ -50,8 +57,24 @@ export default function StationScreen() {
         // When you launch the closed app from the notification or any other link
         Linking.getInitialURL().then((url) => console.log('getInitialURL', url));
 
+        const appStateSubscription = AppState.addEventListener('change', nextAppState => {
+            if (
+                appState.current.match(/inactive|background/) &&
+                nextAppState === 'active'
+            ) {
+                console.log('App has come to the foreground!');
+                if (appOpenAd.loaded) {
+                    appOpenAd.show()
+                } else {
+                    appOpenAd.load()
+                }
+            }
+            appState.current = nextAppState;
+        });
+
         return () => {
             subscription.remove();
+            appStateSubscription.remove()
         };
     }, []);
 
@@ -116,7 +139,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
-      },
-    
+    },
+
 
 })
