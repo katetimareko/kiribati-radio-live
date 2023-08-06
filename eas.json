@@ -5,8 +5,7 @@
   "build": {
     "base": {
       "android": {
-        "autoIncrement": "versionCode",
-        "credentialsSource": "local"
+        "autoIncrement": "versionCode"
       },
       "ios": {
         "autoIncrement": "buildNumber"
