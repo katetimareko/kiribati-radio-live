@@ -19,6 +19,7 @@
       "**/*"
     ],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
       "bundleIdentifier": "radio.softdev.sok.com.kiribatiradiolive",
       "buildNumber": "3",
@@ -56,6 +57,8 @@
       }
     },
     "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
       [
         "expo-build-properties",
         {
@@ -64,7 +67,9 @@
             "enableShrinkResourcesInReleaseBuilds": true,
             "usesCleartextTraffic": true
           },
-          "ios": {}
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ]
