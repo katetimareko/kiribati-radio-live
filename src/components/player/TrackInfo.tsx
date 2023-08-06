@@ -6,7 +6,6 @@ export const TrackInfo: React.FC<{
     track?: Track;
 }> = ({ track }) => {
     const artwork = track?.artwork as ResourceObject
-    console.log(track)
     return (
         <View style={styles.container}>
             <Image style={styles.artwork} source={artwork} />

@@ -16,6 +16,7 @@ export const PlayPauseButton: React.FC = () => {
   const bufferingDuringPlay = playState === State.Buffering
   const connection = playState === State.Connecting
   const playing = playState === State.Playing
+  const paused = playState === State.Paused
   const playerReady = playState === State.Ready
 
   useEffect(() => {
@@ -42,6 +43,8 @@ export const PlayPauseButton: React.FC = () => {
 
         if (playing) {
           TrackPlayer.pause()
+        } else if (paused) {
+          TrackPlayer.play()
         }
       }} style={styles.playPause}>
         <Ionicons name='play-circle-outline' size={82} color='white' />
