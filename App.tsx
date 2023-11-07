@@ -8,7 +8,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { SetupService } from './src/services/SetupService';
 import { QueueInitialTracksService } from './src/services/QueueInitialTracksService';
-import { appOpenAd } from './src/helper/AppOpenAdHelper';
+import mobileAds from 'react-native-google-mobile-ads';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,16 +19,13 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        appOpenAd.load()
+        mobileAds().initialize();
         await SetupService();
         await QueueInitialTracksService();
         await new Promise(resolve => setTimeout(resolve, 2000))
       } catch (e) {
         console.warn(e)
       } finally {
-        if (appOpenAd.loaded) {
-          await appOpenAd.show()
-        }
         setAppIsReady(true);
       }
     }
