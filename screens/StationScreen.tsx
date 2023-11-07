@@ -9,7 +9,6 @@ import { useNavigation } from "@react-navigation/native";
 import { HeaderButtons, HiddenItem, OverflowMenu, overflowMenuPressHandlerPopupMenu } from "react-navigation-header-buttons";
 import { MaterialHeaderButton } from "../src/components/HeaderItem";
 import { Ionicons } from "@expo/vector-icons";
-import { appOpenAd } from "../src/helper/AppOpenAdHelper";
 
 const Header = () => (
     <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
@@ -43,10 +42,6 @@ export default function StationScreen() {
 
     useEffect(() => {
 
-        if (!appOpenAd.loaded) {
-            appOpenAd.load()
-        }
-
         function deepLinkHandler(data: { url: string }) {
             console.log('deepLinkHandler', data.url);
         }
@@ -57,24 +52,8 @@ export default function StationScreen() {
         // When you launch the closed app from the notification or any other link
         Linking.getInitialURL().then((url) => console.log('getInitialURL', url));
 
-        const appStateSubscription = AppState.addEventListener('change', nextAppState => {
-            if (
-                appState.current.match(/inactive|background/) &&
-                nextAppState === 'active'
-            ) {
-                console.log('App has come to the foreground!');
-                if (appOpenAd.loaded) {
-                    appOpenAd.show()
-                } else {
-                    appOpenAd.load()
-                }
-            }
-            appState.current = nextAppState;
-        });
-
         return () => {
             subscription.remove();
-            appStateSubscription.remove()
         };
     }, []);
 
