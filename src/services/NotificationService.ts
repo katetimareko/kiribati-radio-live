@@ -5,7 +5,6 @@ import { PermissionsAndroid } from 'react-native';
 export const requestUserPermission = async () => {
     if (Platform.OS === 'ios') {
         const authStatus = await messaging().requestPermission();
-        console.log(authStatus, ' fdfd')
         const _ =
             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;

@@ -65,7 +65,8 @@
           "android": {
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
-            "usesCleartextTraffic": true
+            "usesCleartextTraffic": true,
+            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }"
           },
           "ios": {
             "useFrameworks": "static"
@@ -76,6 +77,8 @@
   },
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-9329512651648015~7490552764",
-    "ios_app_id": "ca-app-pub-9329512651648015~4198237025"
+    "ios_app_id": "ca-app-pub-9329512651648015~4198237025",
+    "delay_app_measurement_init": true,
+    "user_tracking_usage_description": "This identifier will be used to deliver personalized ads to you."
   }
 }

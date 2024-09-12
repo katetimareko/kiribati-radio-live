@@ -37,15 +37,11 @@ export const PlayPauseButton: React.FC = () => {
   ) : (
     !playing ?
       <Control type='primary' onPress={() => {
-        if (isLoaded && playerReady) {
+        if (isLoaded) {
           show()
-        }
-
-        if (playing) {
-          TrackPlayer.pause()
-        } else if (paused) {
-          TrackPlayer.play()
-        }
+          return
+        } 
+        TrackPlayer.play()
       }} style={styles.playPause}>
         <Ionicons name='play-circle-outline' size={82} color='white' />
       </Control>
