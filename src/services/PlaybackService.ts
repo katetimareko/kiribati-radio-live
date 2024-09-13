@@ -49,7 +49,7 @@ export async function PlaybackService() {
     });
 
     TrackPlayer.addEventListener(Event.PlaybackState, (event) => {
-        console.log('Event.PlaybackState', event);
+        //console.log('Event.PlaybackState', event);
     });
 
     TrackPlayer.addEventListener(

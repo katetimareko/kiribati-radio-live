@@ -1,11 +1,26 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import type { Track, ResourceObject } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 
-export const TrackInfo: React.FC<{
-    track?: Track;
-}> = ({ track }) => {
-    const artwork = track?.artwork as ResourceObject
+export const TrackInfo = () => {
+
+    const index = useNavigationState((state) => state.index);
+    const [track, setTrack] = useState<Track>();
+
+    useEffect(() => {
+        (async () => {
+            var track = await TrackPlayer.getTrack(index)
+            setTrack(track!)
+        })();
+    }, [index]);
+
+
+    if (!track) {
+        return null
+    }
+    const artwork = track.artwork as ResourceObject
     return (
         <View style={styles.container}>
             <Image style={styles.artwork} source={artwork} />

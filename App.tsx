@@ -8,7 +8,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { SetupService } from './src/services/SetupService';
 import { QueueInitialTracksService } from './src/services/QueueInitialTracksService';
-import mobileAds from 'react-native-google-mobile-ads';
+import mobileAds, { AdsConsent, AdsConsentDebugGeography } from 'react-native-google-mobile-ads';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,7 +19,15 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        mobileAds().initialize();
+        const consentInfo = await AdsConsent.requestInfoUpdate({
+          debugGeography: AdsConsentDebugGeography.EEA,
+          testDeviceIdentifiers: ['dd'],
+        });
+
+         const resultForm = await AdsConsent.loadAndShowConsentFormIfRequired();
+         if (resultForm.canRequestAds) {
+           await mobileAds().initialize()
+         }
         await SetupService();
         await QueueInitialTracksService();
         await new Promise(resolve => setTimeout(resolve, 2000))
