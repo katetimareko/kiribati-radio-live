@@ -1,9 +1,7 @@
 import GradientBackground from "../components/GradientBackground"
-import { ActivityIndicator, AppState, BackHandler, Linking, Platform, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { AdEventType, BannerAd, BannerAdSize, TestIds, useAppOpenAd, useInterstitialAd, InterstitialAd } from "react-native-google-mobile-ads";
+import { AppState, BackHandler, Linking, StyleSheet, View } from "react-native";
 import { PlayerControls } from "../src/components/player/PlayerControls";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import TrackPlayer, { Track } from "react-native-track-player";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { TrackInfo } from "../src/components/player/TrackInfo";
 import { useNavigation } from "@react-navigation/native";
 import { HeaderButtons, HiddenItem, OverflowMenu, overflowMenuPressHandlerPopupMenu } from "react-navigation-header-buttons";
@@ -25,23 +23,24 @@ const Header = () => (
     </HeaderButtons>
 )
 
-export default function StationScreen() {
 
-    const BannerId = Platform.OS === 'android' ? process.env.EXPO_PUBLIC_ANDROID_BANNER_ID : process.env.EXPO_PUBLIC_IOS_BANNER_ID
-    const track = useSetupTrack()
+const StationScreen: React.FC<{
+    index: number;
+}> = ({ index }) => {
+
     const navigation = useNavigation()
     const appState = useRef(AppState.currentState)
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
             // in your app, extract the arrow function into a separate component
             // to avoid creating a new one every time
-            headerRight: Header
+            headerRight: Header,
         })
     }, [navigation])
 
     useEffect(() => {
-
         function deepLinkHandler(data: { url: string }) {
             console.log('deepLinkHandler', data.url);
         }
@@ -57,52 +56,12 @@ export default function StationScreen() {
         };
     }, []);
 
-    if (track === undefined) {
-        return (
-            <SafeAreaView style={styles.screenContainer}>
-                <ActivityIndicator />
-            </SafeAreaView>
-        );
-    }
-
     return (
-        <GradientBackground>
-            <>
-                <View style={styles.content}>
-                    <TrackInfo track={track!} />
-                    <PlayerControls />
-                </View>
-                <View style={styles.ad}>
-                    <BannerAd
-                        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-                        unitId={__DEV__ ? TestIds.BANNER : BannerId!}
-                        requestOptions={{
-                            requestNonPersonalizedAdsOnly: true
-                        }}
-                    />
-                </View>
-            </>
-        </GradientBackground>
+            <View style={styles.content}>
+                <TrackInfo />
+                <PlayerControls />
+            </View>
     )
-}
-
-function useSetupTrack() {
-    const [track, setTrack] = useState<Track>();
-
-    useEffect(() => {
-        let unmounted = false;
-        (async () => {
-            if (unmounted) return;
-            const trackIndex = await TrackPlayer.getCurrentTrack()
-            const currentTrack = await TrackPlayer.getTrack(trackIndex!)
-            setTrack(currentTrack!)
-            if (unmounted) return;
-        })();
-        return () => {
-            unmounted = true;
-        };
-    }, []);
-    return track;
 }
 
 const styles = StyleSheet.create({
@@ -120,3 +79,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     }
 })
+
+export default StationScreen

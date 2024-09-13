@@ -12,6 +12,8 @@ import StationScreen from '../screens/StationScreen'
 import { RootStackParamList } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
 import { requestUserPermission } from '../src/services/NotificationService'
+import Home from '../screens/Home'
+import GradientBackground from '../components/GradientBackground'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -34,16 +36,20 @@ function RootNavigator() {
     requestUserPermission()
   }, [])
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Root" component={StationScreen} options={{ 
-        headerShown: true, 
-        headerTitle: 'Kiribati Radio Live', 
-        headerTransparent: true,
-        headerTitleStyle: {
-          color: 'white'
-        }
-      }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-    </Stack.Navigator>
+    <GradientBackground>
+      <Stack.Navigator screenOptions={{
+        
+      }}>
+        <Stack.Screen name="Root" component={Home} options={{
+          headerShown: false,
+          headerTitle: 'Kiribati Radio Live',
+          headerTransparent: true,
+          headerTitleStyle: {
+            color: 'white'
+          }
+        }} />
+        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      </Stack.Navigator>
+    </GradientBackground>
   )
 }

@@ -1,23 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, Pressable, StyleSheet, View } from 'react-native';
-import TrackPlayer, { usePlaybackState, State } from 'react-native-track-player';
+import TrackPlayer, { usePlaybackState, State, useActiveTrack, Track } from 'react-native-track-player';
 import { Control } from './Control';
 import { TestIds, useInterstitialAd } from 'react-native-google-mobile-ads';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 const interestialId = Platform.OS === 'android' ? process.env.EXPO_PUBLIC_ANDROID_INTERSTITIAL_ID : process.env.EXPO_PUBLIC_IOS_INTERSTITIAL_ID;
 
 export const PlayPauseButton: React.FC = () => {
-  const playState = usePlaybackState()
+  const { state } = usePlaybackState()
+  const index = useNavigationState((state) => state.index);
+  const [play, setPlay] = useState<boolean>(true)
+
   const { load, show, isClosed, isLoaded } = useInterstitialAd(__DEV__ ? TestIds.INTERSTITIAL : interestialId!, {
     requestNonPersonalizedAdsOnly: true
   })
 
-  const bufferingDuringPlay = playState === State.Buffering
-  const connection = playState === State.Connecting
-  const playing = playState === State.Playing
-  const paused = playState === State.Paused
-  const playerReady = playState === State.Ready
+  const bufferingDuringPlay = state === State.Buffering
+  const connection = state === State.Loading
+  const playing = state === State.Playing
+  const paused = state === State.Paused
+  const playerReady = state === State.Ready
+
+  useEffect(() => {
+    (async () => {
+        var current = await TrackPlayer.getActiveTrackIndex()
+        setPlay(current !== index)
+    })();
+}, [index]);
 
   useEffect(() => {
     load()
@@ -30,24 +41,32 @@ export const PlayPauseButton: React.FC = () => {
     }
   }, [isClosed]);
 
-  return bufferingDuringPlay || connection ? (
+  return bufferingDuringPlay || connection || !isLoaded ? (
     <View style={styles.statusContainer}>
       <ActivityIndicator size='large' color='white' />
     </View>
   ) : (
-    !playing ?
-      <Control type='primary' onPress={() => {
+    !playing || play ?
+      <Control type='primary' onPress={ async () => {
+        var currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
+
+        if (index !== currentTrackIndex) {
+          TrackPlayer.pause()
+          setPlay(false)
+          await TrackPlayer.skipToNext()
+        }
         if (isLoaded) {
           show()
           return
-        } 
+        }
+        
         TrackPlayer.play()
       }} style={styles.playPause}>
         <Ionicons name='play-circle-outline' size={82} color='white' />
       </Control>
       :
       <Control type='primary' onPress={() => TrackPlayer.pause()} style={styles.playPause}>
-        <Ionicons name='ios-pause-circle-outline' size={82} color='white' />
+        <Ionicons name='pause-circle-outline' size={82} color='white' />
       </Control>
   );
 };
