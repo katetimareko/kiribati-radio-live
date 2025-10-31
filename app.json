@@ -2,6 +2,7 @@
   "expo": {
     "name": "Kiribati Radio Live",
     "slug": "KiribatiRadioLive",
+    "newArchEnabled": true,
     "version": "1.4.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -68,7 +69,10 @@
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
             "usesCleartextTraffic": true,
-            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }"
+            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }",
+            "minSdkVersion": 24,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
           },
           "ios": {
             "useFrameworks": "static"

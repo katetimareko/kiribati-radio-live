@@ -79,4 +79,6 @@ GoogleService-Info.plist
 android
 ios
 
+.env*
+
 # @end expo-cli
