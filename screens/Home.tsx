@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StationScreen from "./StationScreen";
 import { Platform, StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
@@ -6,9 +6,9 @@ import GradientBackground from "../components/GradientBackground";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
-function MyTabBar({ state, descriptors, navigation }) {
+function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     return (
-        <View style={{ flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label =
@@ -24,6 +24,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                     const event = navigation.emit({
                         type: 'tabPress',
                         target: route.key,
+                        canPreventDefault: true
                     });
 
                     if (!isFocused && !event.defaultPrevented) {
@@ -43,17 +44,18 @@ function MyTabBar({ state, descriptors, navigation }) {
                         accessibilityRole="button"
                         accessibilityState={isFocused ? { selected: true } : {}}
                         accessibilityLabel={options.tabBarAccessibilityLabel}
-                        testID={options.tabBarTestID}
+                        testID={options.tabBarButtonTestID}
                         onPress={onPress}
                         onLongPress={onLongPress}
-                        style={{ flex: 1,
+                        style={{
+                            flex: 1,
                             alignContent: 'center',
                             padding: 10,
-                         }}
+                        }}
                     >
-                        <MaterialCommunityIcons style={{textAlign: 'center', color: isFocused ? '#c31432' : '#222'}} size={24} name="radio" />
+                        <MaterialCommunityIcons style={{ textAlign: 'center', color: isFocused ? '#c31432' : '#222' }} size={24} name="radio" />
                         <Text allowFontScaling={false} style={{ fontSize: 15, color: isFocused ? '#c31432' : '#222', textAlign: 'center' }}>
-                            {label}
+                            {label.toString()}
                         </Text>
                     </TouchableOpacity>
                 );
@@ -66,14 +68,15 @@ const Home = () => {
     const BannerId = Platform.OS === 'android' ? process.env.EXPO_PUBLIC_ANDROID_BANNER_ID : process.env.EXPO_PUBLIC_IOS_BANNER_ID
 
     return (
-            <GradientBackground>
-                <>
-                <Tab.Navigator  tabBar={props => <MyTabBar {...props} />} sceneContainerStyle={{
-                    backgroundColor: 'transparent'
-                }} screenOptions={{
+        <GradientBackground>
+            <>
+                <Tab.Navigator tabBar={props => <MyTabBar {...props} />} screenOptions={{
                     headerTransparent: true,
                     headerTitleStyle: {
                         color: 'white'
+                    },
+                    sceneStyle: {
+                        backgroundColor: 'transparent'
                     }
                 }}>
                     <Tab.Screen name="Tarawa Station" children={() => {
@@ -92,8 +95,8 @@ const Home = () => {
                         }}
                     />
                 </View>
-                </>
-            </GradientBackground>
+            </>
+        </GradientBackground>
     );
 }
 

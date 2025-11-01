@@ -40,7 +40,7 @@ import TrackPlayer, {
         Capability.SkipToPrevious,
         Capability.SeekTo,
       ],
-      compactCapabilities: [
+      notificationCapabilities: [
         Capability.Play,
         Capability.Pause,
         Capability.SkipToNext,

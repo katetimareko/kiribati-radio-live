@@ -48,6 +48,7 @@ export const PlayPauseButton: React.FC = () => {
   ) : (
     !playing || play ?
       <Control type='primary' onPress={ async () => {
+
         var currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
 
         if (index !== currentTrackIndex) {
@@ -55,6 +56,7 @@ export const PlayPauseButton: React.FC = () => {
           setPlay(false)
           await TrackPlayer.skipToNext()
         }
+        
         if (isLoaded) {
           show()
           return

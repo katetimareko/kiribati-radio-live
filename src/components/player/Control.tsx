@@ -1,11 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
 import React, { useRef } from 'react';
 import {
   StyleSheet,
-  Text,
   TextStyle,
   TouchableWithoutFeedback,
-  View,
   ViewStyle,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -24,7 +21,7 @@ export const Control: React.FC<ButtonProps> = ({
   type = 'primary',
   style,
 }) => {
-  const animatableView = useRef<Animatable.View>()
+  const animatableView = useRef<Animatable.View>(null)
 
   const bounce = () => animatableView.current?.pulse!(300).then(endState => console.log(endState.finished ? 'bounce finished' : 'bounce cancelled'));
 

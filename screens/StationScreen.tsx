@@ -1,7 +1,6 @@
-import GradientBackground from "../components/GradientBackground"
 import { AppState, BackHandler, Linking, StyleSheet, View } from "react-native";
 import { PlayerControls } from "../src/components/player/PlayerControls";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { TrackInfo } from "../src/components/player/TrackInfo";
 import { useNavigation } from "@react-navigation/native";
 import { HeaderButtons, HiddenItem, OverflowMenu, overflowMenuPressHandlerPopupMenu } from "react-navigation-header-buttons";
