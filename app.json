@@ -3,7 +3,7 @@
     "name": "Kiribati Radio Live",
     "slug": "KiribatiRadioLive",
     "newArchEnabled": true,
-    "version": "1.4.2",
+    "version": "1.4.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -47,7 +47,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "radio.softdev.sok.com.kiribatiradiolive",
-      "versionCode": 28
+      "versionCode": 30
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
