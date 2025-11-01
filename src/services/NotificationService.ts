@@ -1,13 +1,14 @@
 import { Platform } from "react-native";
-import messaging from '@react-native-firebase/messaging';
+import {AuthorizationStatus} from '@react-native-firebase/messaging';
 import { PermissionsAndroid } from 'react-native';
+import { messaging } from "../helper/firebase";
 
 export const requestUserPermission = async () => {
     if (Platform.OS === 'ios') {
-        const authStatus = await messaging().requestPermission();
+        const authStatus = await messaging.requestPermission();
         const _ =
-            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+            authStatus === AuthorizationStatus.AUTHORIZED ||
+            authStatus === AuthorizationStatus.PROVISIONAL;
     } else {
         if (Platform.OS === 'android') {
             var granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
